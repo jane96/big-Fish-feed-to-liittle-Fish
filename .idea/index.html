@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="bootstrap.min.css">
+    <link rel="stylesheet" href="bootstrap-switch.min.css">
+    <style>
+        body {
+            padding-top: 10px;
+        }
+
+        .all_bg {
+            width: 800px;
+            height: 600px;
+            margin: 0px auto;
+        }
+
+        .all_canvas {
+            position: relative;
+            width: 800px;
+            height: 600px;
+            padding-top: 10px;
+            margin: 0px auto;
+
+        }
+
+        #canvas1 {
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            z-index: 1;
+        }
+
+        #canvas2 {
+            position: absolute;
+            bottom: 0px;
+            left: 0px;
+            z-index: 0;
+        }
+
+        #start > button {
+            position: absolute;
+            left: 350px;
+            top: 460px;
+            z-index: 3;
+            display: inline-block;
+            background: #108DFE;
+            zoom: 1; /* zoom and *display = ie7 hack for display:inline-block */
+            display: inline;
+            vertical-align: baseline;
+            margin: 0 2px;
+            outline: none;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            font: 14px/100% Arial, Helvetica, sans-serif;
+            padding: .5em 2em .55em;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, .3);
+            -webkit-border-radius: .5em;
+            -moz-border-radius: .5em;
+            border-radius: .5em;
+            -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+            -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+        }
+
+        #start > button:hover {
+            background: limegreen;
+        }
+
+        .startBackground {
+            position: absolute;
+            z-index: 2;
+        }
+
+        #restart > button {
+            position: absolute;
+            left: 380px;
+            top: 230px;
+            z-index: 4;
+            background: #e1a;
+            zoom: 1; /* zoom and *display = ie7 hack for display:inline-block */
+            display: inline;
+            vertical-align: baseline;
+            margin: 0 2px;
+            outline: none;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            font: 14px/100% Arial, Helvetica, sans-serif;
+            padding: .5em 2em .55em;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, .3);
+            -webkit-border-radius: .5em;
+            -moz-border-radius: .5em;
+            border-radius: .5em;
+            -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+            -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+        }
+
+        #restart > button:hover {
+            background: limegreen;
+        }
+
+        .form {
+            z-index: 7;
+            left: 257px;
+            top: 20px;
+            position: absolute;
+            display: none;
+
+        }
+
+        .thumbnail {
+            background-color: rgba(16, 141, 254, 0.3);
+            border-style: double;
+            border-color: deepskyblue;
+        }
+
+        tr {
+            border-style: hidden;
+            border-color: deepskyblue;
+        }
+
+        .switch {
+            z-index: 6;
+            position: absolute;
+            left: 700px;
+            top: 580px;
+            display: none;
+        }
+
+        b {
+            font-weight: bold;
+            color: white;
+        }
+
+        a > span > #sina:hover {
+            background: orangered;
+        }
+
+        a > span > #qq:hover {
+            background: skyblue;
+        }
+
+        a > span > #people:hover {
+            background: royalblue;
+        }
+
+        a > span > #qq:hover {
+            background: skyblue;
+        }
+
+        a > span > #qZone:hover {
+            background: lightyellow;
+        }
+    </style>
+</head>
+<body>
+<div class="all_bg">
+    <div class="all_canvas">
+        <canvas id="canvas1" width="800"
+                height="600">
+        </canvas>
+        <canvas id="canvas2" width="800"
+                height="600">
+        </canvas>
+        <div id="start">
+            <button onclick="startGame()"><font color="white">开始游戏</font></button>
+        </div>
+        <div id="restart">
+            <button onclick="restartGame()">重新开始</button>
+        </div>
+        <div class="startBackGround">
+            <img src="../src/cover.png"/>
+        </div>
+        <div>
+            <audio id="audio" loop>
+                <source src="../src/bgm.mp3" type="audio/mpeg">
+                您的浏览器不支持 audio 元素。
+            </audio>
+            <audio id="boomAudio">
+                <source src="../src/boom.mp3" type="audio/mpeg">
+                您的浏览器不支持 audio 元素。
+            </audio>
+
+        </div>
+        <div class="switch" id="switch">
+            <input type="checkbox" id="my-checkbox"/>
+        </div>
+        <div class="form" id="form">
+            <div class="row col-md-12">
+
+                <div class="col-md-8">
+                    <div class="thumbnail">
+                        <img src="../src/wizard.png"/>
+                        <div class="caption">
+                            <table class="table table-responsive">
+                                <caption>
+                                    <tr>
+                                        <td align="center"><label class="label label-info">通关数</label></td>
+                                        <td align="center"><label class="label label-success">最高得分</label></td>
+                                        <td align="center"><label class="label label-warning">当前得分</label></td>
+                                    </tr>
+                                </caption>
+                                <tbody>
+                                <tr>
+                                    <td align="center"><font size="3" color="#ffff" id="dataLevel"></font></td>
+                                    <td align="center"><font size="3" color="#ffff" id="dataMaxScore"></font></td>
+                                    <td align="center"><font size="3" color="#ffff" id="dataScore"></font></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        <button class="btn btn-block  btn-danger" onclick="restartGame()">重新开始</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        <b>分享到：&nbsp;</b>
+                                        <a target="_blank"
+                                           href="http://v.t.sina.com.cn/share/share.php?url=http://www.funet8.com/index.html&amp;
+                                           title=大鱼喂小鱼&amp;" title="新浪微博">
+                                            <span> <img id="sina" src="../src/sinaRed.png" alt="新浪微博"/> </span>
+                                        </a>
+                                        <a target="_blank"
+                                           href="http://share.v.t.qq.com/index.php?c=share&amp;a=index&amp;url=http://www.funet8.com/&amp;
+                                                title=大鱼喂小鱼&amp;pic=http://www.funet8.com/wp-content/uploads/file/jimixiu-pi.jpg"
+                                           title="腾讯微博">
+                                            <span> <img id="qq" src="../src/qqwb.png" alt="腾讯微博"/> </span>
+                                        </a>
+                                        <a target="_blank"
+                                           href="http://widget.renren.com/dialog/share?url=http://www.funet8.com/&amp;
+                                                title=大鱼喂小鱼&amp;pic=http://www.funet8.com/wp-content/uploads/file/jimixiu-pi.jpg&amp;description=好玩的趣味游戏"
+                                           title="人人网">
+                                            <span> <img id="people" src="../src/people.png"/> </span>
+                                        </a>
+                                        <a target="_blank" href="http://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?url=http://www.baidu.com/
+                                                &title=大鱼喂小鱼" title="QQ空间">
+                                            <span> <img id="qZone" src="../src/qzone.png"/> </span>
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/jquery-1.11.1.min.js"></script>
+<script src="js/bootstrap-switch.min.js"></script>
+<script src="js/main.js"></script>
+<script src="js/commonFunctions.js"></script>
+<script src="js/draw_bg.js"></script>
+<script src="js/ane.js"></script>
+<script src="js/fruit.js"></script>
+<script src="js/mom.js"></script>
+<script src="js/collision.js"></script>
+<script src="js/baby.js"></script>
+<script src="js/data.js"></script>
+<script src="js/wave.js"></script>
+<script src="js/dust.js"></script>
+<script src="js/warming.js"></script>
+<script src="js/boom.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
+
+</body>
+</html>
